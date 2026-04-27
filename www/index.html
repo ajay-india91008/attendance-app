@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:;">
+    <title>AttendPro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a24;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        iframe { 
+            width: 100vw; 
+            height: 100vh; 
+            border: none;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <iframe id="app-frame" src="http://kesyaipl.com/attendance/login.php" allow="camera;geolocation"></iframe>
+    <script src="https://unpkg.com/@capacitor/status-bar@latest/dist/esm/status-bar.js"></script>
+    <script>
+        if (typeof window !== 'undefined') {
+            window.addEventListener('load', function() {
+                try {
+                    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar) {
+                        window.Capacitor.Plugins.StatusBar.hide();
+                    }
+                } catch(e) {}
+            });
+        }
+    </script>
+</body>
+</html>

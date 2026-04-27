@@ -1,0 +1,53 @@
+name: Build Android APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install npm dependencies
+      run: npm install
+
+    - name: Install Capacitor dependencies
+      run: npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/camera @capacitor/geolocation @capacitor/filesystem
+
+    - name: Initialize Capacitor
+      run: npx cap init AttendPro com.attendance.app --web-dir=www
+
+    - name: Add Android platform
+      run: npx cap add android
+
+    - name: Sync web assets to Android
+      run: npx cap sync android
+
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
+    - name: Build Android APK
+      run: cd android && ./gradlew assembleDebug
+      shell: bash
+
+    - name: Upload APK artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: attendance-app-apk
+        path: android/app/build/outputs/apk/debug/app-debug.apk
