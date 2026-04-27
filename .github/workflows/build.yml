@@ -29,9 +29,7 @@ jobs:
     - name: Initialize Capacitor
       run: npx cap init AttendPro com.attendance.app --web-dir=www
 
-    - name: Add Android platform
-      run: npx cap add android
-
+    # Android platform already exists in repo, just sync
     - name: Sync web assets to Android
       run: npx cap sync android
 
