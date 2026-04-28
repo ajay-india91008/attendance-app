@@ -1,5 +1,9 @@
 {
   "appId": "com.attendance.app",
   "appName": "AttendPro",
-  "webDir": "www"
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["https://kesyaipl.com/*"]
+  }
 }

@@ -11,42 +11,17 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #1a1a24;
             color: #fff;
-            overflow: auto;
+            overflow: hidden;
         }
     </style>
 </head>
 <body>
-    <div id="webview-container">
-        <webview id="webview" src="https://kesyaipl.com/attendance/login.php"></webview>
-    </div>
     <script>
-        document.getElementById('webview').addEventListener('did-navigate', function(e) {
-            console.log('Navigated to: ' + e.url);
-        });
+        window.location.href = 'https://kesyaipl.com/attendance/login.php';
         
-        document.getElementById('webview').addEventListener('did-finish-load', function(e) {
-            console.log('Finished loading');
-            injectNavigationCheck();
-        });
-        
-        function injectNavigationCheck() {
-            try {
-                var webview = document.getElementById('webview');
-                webview.executeScript({code: `
-                    (function() {
-                        var lastUrl = window.location.href;
-                        setInterval(function() {
-                            if (window.location.href !== lastUrl) {
-                                lastUrl = window.location.href;
-                                console.log('URL changed to: ' + lastUrl);
-                            }
-                        }, 1000);
-                    })();
-                `});
-            } catch(e) {
-                console.log('Error: ' + e.message);
-            }
-        }
+        setTimeout(function() {
+            window.location.href = 'https://kesyaipl.com/attendance/login.php';
+        }, 100);
     </script>
 </body>
 </html>
