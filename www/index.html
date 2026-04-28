@@ -3,37 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; frame-src https:;">
     <title>AttendPro</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
+        html, body { 
+            height: 100%;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #1a1a24;
             color: #fff;
-            overflow-x: hidden;
+            overflow: hidden;
         }
-        iframe { 
-            width: 100vw; 
-            height: 100vh; 
+        #app-frame { 
+            width: 100%; 
+            height: 100%; 
             border: none;
-            min-height: 100vh;
         }
     </style>
 </head>
 <body>
-    <iframe id="app-frame" src="https://kesyaipl.com/attendance/login.php" allow="camera;geolocation"></iframe>
-    <script src="https://unpkg.com/@capacitor/status-bar@latest/dist/esm/status-bar.js"></script>
+    <iframe id="app-frame" src="https://kesyaipl.com/attendance/login.php"></iframe>
     <script>
-        if (typeof window !== 'undefined') {
-            window.addEventListener('load', function() {
-                try {
-                    if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.StatusBar) {
-                        window.Capacitor.Plugins.StatusBar.hide();
+        const iframe = document.getElementById('app-frame');
+        let lastUrl = iframe.src;
+        let checkCount = 0;
+        
+        function checkUrl() {
+            try {
+                const currentUrl = iframe.contentWindow.location.href;
+                
+                if (currentUrl !== lastUrl && currentUrl !== 'about:blank') {
+                    if (currentUrl.includes('index.php') || currentUrl.includes('dashboard')) {
+                        window.location.href = currentUrl;
+                    } else {
+                        lastUrl = currentUrl;
                     }
-                } catch(e) {}
-            });
+                }
+            } catch(e) {}
+            
+            checkCount++;
+            if (checkCount < 100) {
+                setTimeout(checkUrl, 500);
+            }
         }
+        
+        setTimeout(checkUrl, 2000);
     </script>
 </body>
 </html>
