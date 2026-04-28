@@ -3,7 +3,12 @@
   "appName": "AttendPro",
   "webDir": "www",
   "server": {
-    "androidScheme": "https",
-    "allowNavigation": ["https://kesyaipl.com/*"]
+    "hostname": "kesyaipl.com",
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "CapacitorCookies": {
+      "enabled": true
+    }
   }
 }
