@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https:; connect-src 'self' https:; frame-src https:;">
     <title>AttendPro</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -12,42 +11,42 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: #1a1a24;
             color: #fff;
-            overflow: hidden;
-        }
-        #app-frame { 
-            width: 100%; 
-            height: 100%; 
-            border: none;
+            overflow: auto;
         }
     </style>
 </head>
 <body>
-    <iframe id="app-frame" src="https://kesyaipl.com/attendance/login.php"></iframe>
+    <div id="webview-container">
+        <webview id="webview" src="https://kesyaipl.com/attendance/login.php"></webview>
+    </div>
     <script>
-        const iframe = document.getElementById('app-frame');
-        let lastUrl = iframe.src;
-        let checkCount = 0;
+        document.getElementById('webview').addEventListener('did-navigate', function(e) {
+            console.log('Navigated to: ' + e.url);
+        });
         
-        function checkUrl() {
+        document.getElementById('webview').addEventListener('did-finish-load', function(e) {
+            console.log('Finished loading');
+            injectNavigationCheck();
+        });
+        
+        function injectNavigationCheck() {
             try {
-                const currentUrl = iframe.contentWindow.location.href;
-                
-                if (currentUrl !== lastUrl && currentUrl !== 'about:blank') {
-                    if (currentUrl.includes('index.php') || currentUrl.includes('dashboard')) {
-                        window.location.href = currentUrl;
-                    } else {
-                        lastUrl = currentUrl;
-                    }
-                }
-            } catch(e) {}
-            
-            checkCount++;
-            if (checkCount < 100) {
-                setTimeout(checkUrl, 500);
+                var webview = document.getElementById('webview');
+                webview.executeScript({code: `
+                    (function() {
+                        var lastUrl = window.location.href;
+                        setInterval(function() {
+                            if (window.location.href !== lastUrl) {
+                                lastUrl = window.location.href;
+                                console.log('URL changed to: ' + lastUrl);
+                            }
+                        }, 1000);
+                    })();
+                `});
+            } catch(e) {
+                console.log('Error: ' + e.message);
             }
         }
-        
-        setTimeout(checkUrl, 2000);
     </script>
 </body>
 </html>
