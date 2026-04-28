@@ -3,12 +3,7 @@
   "appName": "AttendPro",
   "webDir": "www",
   "server": {
-    "hostname": "kesyaipl.com",
+    "hostname": "kesyaipl.com/attendance",
     "androidScheme": "https"
-  },
-  "plugins": {
-    "CapacitorCookies": {
-      "enabled": true
-    }
   }
 }
