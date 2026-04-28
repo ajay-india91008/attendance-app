@@ -20,10 +20,7 @@ public class MainActivity extends BridgeActivity {
             settings.setDatabaseEnabled(true);
             settings.setAllowFileAccess(true);
             settings.setAllowContentAccess(true);
-            settings.setAllowFileURLs(true);
             settings.setGeolocationEnabled(true);
-            settings.setMediaEnabled(true);
-            settings.setCameraAccessAllowed(true);
         }
     }
 }
